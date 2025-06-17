@@ -1,0 +1,60 @@
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+  }
+
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 25px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 3.5px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+
+  input:checked + .slider {
+    background-color: #6a0dad; /* Violet */
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(24px);
+  }
+  .switch-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0; /* Ajoute un peu d’espace au-dessus et en dessous */
+  }
+
+  .switch-label {
+    font-weight: bold; /* Texte en gras */
+    margin-bottom: 5px; /* Ajoute un peu d’espace sous le label */
+  }
+
+  .switch-text {
+    font-weight: bold; /* Texte en gras */
+    margin-top: 5px; /* Ajoute un peu d’espace au-dessus du texte */
+  }

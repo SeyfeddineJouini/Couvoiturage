@@ -1,0 +1,116 @@
+body{
+    background: linear-gradient(to bottom,#293358, #4848a1);
+}
+
+h1{
+    color: white;
+}
+
+h2{
+    color: white;
+}
+
+.accueil-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+    justify-content: center;
+    padding: 20px;
+    color: white;
+    font-family: "Arial", sans-serif;
+  }
+  
+  /* Section de bienvenue */
+  .hero {
+    margin-bottom: 30px;
+  }
+  
+  .hero h1 {
+    font-size: 2.8em;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .subtitle {
+    font-size: 1.2em;
+    opacity: 0.9;
+  }
+  
+  /* Boutons */
+  .buttons-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .btn {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.2em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .primary-btn {
+    background-color: #927e6e;
+    color: white;
+  }
+  
+  .primary-btn:hover {
+    background-color: #33337A;
+  }
+  
+  .secondary-btn {
+    background-color: white;
+    color: #927e6e;
+    border: 2px solid #927e6e;
+  }
+  
+  .secondary-btn:hover {
+    border: 2px solid #33337A;
+    background-color: #33337A;
+    color: white;
+  }
+  
+  /* Section des avantages */
+  .features {
+    margin-top: 20px;
+    width: 80%;
+  }
+  
+  .features h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+  }
+  
+  .feature-box {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  
+  .feature {
+    width: 250px;
+    background: white;
+    color: #333;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    margin: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .feature h3 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+  }
+  
+  .feature p {
+    font-size: 1em;
+    opacity: 0.8;
+  }
+  

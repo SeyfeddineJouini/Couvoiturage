@@ -1,0 +1,79 @@
+/* Conteneur pour les boutons de semaine */
+.weeks-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 2%;             /* Espace entre les boutons en % */
+  width: 90%;          /* Le conteneur occupe 90% de la largeur de son parent */
+  margin: 2% auto;     /* Centre horizontalement le conteneur, avec marge verticale */
+  padding: 2%;         /* "Respiration" interne */
+  justify-items: center;  /* Centre horizontalement le contenu dans chaque cellule */
+  align-items: center;    /* Centre verticalement si la hauteur est variable */
+}
+
+/* Style de base pour les boutons de semaine */
+.week-button {
+  background-color: #293358;      /* Couleur de fond */
+  color: #ffffff;                 /* Couleur de texte */
+  font-size: 100%;                /* Taille de police relative (1em ≈ 16px) */
+  padding: 2% 5%;                 /* Espacement interne en % pour s'adapter à la taille du bouton */
+  border: none;
+  border-radius: 8px;             /* Bords arrondis */
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;             /* Centre le texte */
+
+  width: 100%;
+  max-width: 300px;
+
+  margin: 10px auto;
+
+
+  font-size: 16px;
+  text-align: center;
+  display: block;
+}
+
+/* Effet au survol */
+.week-button:hover {
+  background-color: #5b3fd8;      /* Couleur plus soutenue */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Effet "clic" (optionnel) */
+.week-button:active {
+  transform: scale(0.98);
+}
+
+/* Bouton "Retour" (même style mais centré différemment) */
+.BackButton {
+  background-color: #293358;
+  color: #fff;
+  font-size: 100%;
+  padding: 2% 5%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  /* Pour le centrer, on le rend "block" et on met une marge auto */
+  display: block;
+  width: fit-content;       /* La largeur s’ajuste au contenu */
+  margin: 2% auto;          /* Centre horizontalement + marge verticale */
+}
+
+/* Survol et clic pour le bouton Retour */
+.BackButton:hover {
+  background-color: #5b3fd8;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.BackButton:active {
+  transform: scale(0.98);
+}
+
+.current-week {
+  background-color: #927e6e;
+  color: white;
+  font-weight: bold;
+}

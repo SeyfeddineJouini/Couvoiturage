@@ -1,0 +1,118 @@
+/* Timeline.css */
+.timeline-container {
+    max-width: 1600px;
+    margin: 30px auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-container h1 {
+    text-align: center;
+    font-size: 34px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.timeline-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.timeline-list li {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #007bff;
+    font-size: 32px;
+}
+
+.timeline-list li strong {
+    font-size: 18px;
+    color: #007bff;
+    font-size: 24px;
+}
+
+.timeline-list li p {
+    margin: 5px 0;
+    font-size: 24px;
+    color: #555;
+}
+
+/* Effet au survol */
+.timeline-list li:hover {
+    background-color: #f1f1f1;
+    transition: 0.3s;
+}
+
+.btn-nav {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-top: 8px;
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block; /* Pour éviter qu'ils soient collés */
+    width: 100%;
+    text-align: center;
+}
+
+.btn-nav:hover {
+    background-color: #0056b3;
+}
+
+.timeline-day {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .timeline-section {
+    flex: 1;
+    min-width: 250px;
+    padding: 15px;
+    border: 1px solid #ccc;       
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  
+  .timeline-section h3 {
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .btn-nav {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .timeline-date {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2em;
+    color: black;
+    margin-bottom: 10px;
+  }
+  
+  
