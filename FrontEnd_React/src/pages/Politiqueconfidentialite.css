@@ -1,0 +1,36 @@
+.politiqueconfidentialite {
+    text-align: center;
+    padding: 2rem;
+    width: 50%;
+    margin: 2rem auto;
+    height: auto;
+    background-color: white;
+    
+}
+
+
+.texte{
+    text-align: center;
+    color: black;
+}
+.txt{
+    text-align: center;
+
+    color: black;
+}
+.liste-confidentialite {
+  list-style-type: disc; /* ou circle/square */
+  margin-left: 0rem;     /* décalage à gauche */
+  padding-left: 1rem;
+  text-align: left;      /* important pour aligner le texte des <li> à gauche */
+  max-width: 600px;
+  margin: 0 auto;        /* centrer la liste */
+}
+
+.liste-confidentialite li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+.titre{
+    color: black;
+}

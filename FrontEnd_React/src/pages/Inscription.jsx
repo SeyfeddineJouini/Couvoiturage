@@ -14,7 +14,8 @@ function Inscription() {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [consentGiven, setConsentGiven] = useState(false); // état pour le consentement
+  
   const handleChange = (e) => {
     const { name, value} = e.target;
     setFormData({
@@ -25,6 +26,11 @@ function Inscription() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!consentGiven) {
+      setErrorMessage("Vous devez accepter l'utilisation de vos données personnelles.");
+      return;
+    }
 
     try {
       const hashedPassword = CryptoJS.SHA256(formData.password).toString();
@@ -108,6 +114,23 @@ function Inscription() {
               required
             />
           </div>
+          {/* ✅ Case à cocher RGPD */}
+          <div className="form-group">
+            <input
+              type="checkbox"
+              id="consent"
+              checked={consentGiven}
+              onChange={(e) => setConsentGiven(e.target.checked)}
+              required
+            />
+          <label htmlFor="consent">
+            J'accepte que mes données soient utilisées conformément à la{" "}
+            <a href="/politiqueconfidentialite"  rel="noopener noreferrer">
+              politique de confidentialité
+            </a>.
+          </label>
+          </div>
+
 
           <div className="hasAccount">
             Vous avez déjà un compte?
