@@ -19,8 +19,7 @@ function Politiqueconfidentialite() {
           <li>
             Sur la personne responsable du traitement des données à caractère personnel collectées ;
           </li>
-          <li>Sur les destinataires de ces données personnelles ;</li>
-          <li>Sur la politique du site en matière de cookies.</li>
+          <li>Sur les destinataires de ces données personnelles ;</li> 
         </ul>
         
       </div>

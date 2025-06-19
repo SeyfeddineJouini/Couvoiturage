@@ -193,6 +193,43 @@ def passengers(id):
             })
     return jsonify(passengers_list)
 
+###############################################################################
+# ENDPOINTS POUR LA SUPRRESSION D'UN UTILISATEUR
+###############################################################################
+
+@app.route('/api/users/<string:user_id>', methods=['DELETE'])
+@log_call
+def delete_user(user_id):
+    """
+    Endpoint: /api/users/<user_id>
+    Méthode: DELETE
+
+    Description:
+        Supprime définitivement un utilisateur de la base de données.
+
+    Paramètre d'URL:
+        - user_id (str): Identifiant de l'utilisateur.
+
+    Sortie (JSON):
+        Message de confirmation ou d'erreur.
+    """
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({'error': 'Utilisateur non trouvé'}), 404
+    
+    # Supprimer les trajets
+    RideRequest.query.filter_by(user_id=user_id).delete()
+
+    # Supprimer les calendriers
+    CalendarEntry.query.filter_by(user_id=user_id).delete()
+
+    # Supprimer les offres de covoiturage (si applicable)
+    DriverOffer.query.filter_by(driver_id=user_id).delete()
+
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({'message': 'Utilisateur supprimé avec succès'}), 200
+
 
 ###############################################################################
 # ENDPOINTS POUR LA GESTION DU CALENDRIER

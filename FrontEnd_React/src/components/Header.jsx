@@ -29,6 +29,7 @@ function Header() {
             <Link to="/connexion" className="nav-link nav-contact">
               Connexion
             </Link>
+            
           </>
         ) : (
           <>
@@ -38,10 +39,12 @@ function Header() {
             <Link to="/timeline" className="nav-link">
             Mes trajets
             </Link>
-
             <button onClick={handleLogout} className="nav-link nav-contact">
               Se déconnecter
             </button>
+            <Link to="/desinscription" className="nav-link nav-contact">
+              Se désinscrire
+            </Link>
           </>
         )}
         <Link onClick={handleLogout} to="http://localhost:3000/" className="nav-link nav-contact">

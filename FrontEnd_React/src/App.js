@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Accueil from "./pages/Accueil";
 import Inscription from "./pages/Inscription";
 import Connexion from "./pages/Connexion";
+import Desinscription from "./pages/Desinscription";
 import PolitiqueConfidentialite from "./pages/Politiqueconfidentialite";
 import ConducteurMap from "./pages/ConducteurMap";
 import { AuthProvider } from "./context/AuthContext";
@@ -25,6 +26,7 @@ function App() {
             <Route path="/" element={<Accueil />} />
             <Route path="/inscription" element={<Inscription />} />
             <Route path ="/connexion" element={<Connexion />} />
+            <Route path ="/desinscription" element={<Desinscription />} />
             <Route path ="/politiqueconfidentialite" element={<PolitiqueConfidentialite />} />
             <Route path="/InterfaceConducteur" element={<ConducteurMap />} />
             <Route path="/Calendrier" element={<Calendrier />} />
