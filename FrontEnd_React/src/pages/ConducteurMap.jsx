@@ -307,6 +307,7 @@ const InterfaceConducteur = () => {
           body: JSON.stringify({
             driver_id: userId,
             ride_request_id: passenger.ride_request_id,
+            departure_hour: passenger.passenger_time,
           }),
         });
 

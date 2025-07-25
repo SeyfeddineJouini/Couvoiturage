@@ -88,3 +88,17 @@ def send_offer_email(driver, passenger, departure_hour, sender_email, sender_pas
         subject=subject_driver,
         body=body_driver
     )
+
+
+if __name__ == "__main__":
+    class DummyUser:
+        def __init__(self, first_name, last_name, address, email):
+            self.first_name = first_name
+            self.last_name = last_name
+            self.address = address
+            self.email = "seckalioune107@gmail.com"  # <- ton adresse test
+
+    driver = DummyUser("Jean", "Conducteur", "12 rue des Lilas, Paris", "tonemail@tondomaine.com")
+    passenger = DummyUser("Marie", "Passagère", "45 avenue Victor Hugo, Lyon", "tonemail@tondomaine.com")
+
+    send_offer_email(driver, passenger, "08:30", SENDER_EMAIL, SENDER_PASSWORD)

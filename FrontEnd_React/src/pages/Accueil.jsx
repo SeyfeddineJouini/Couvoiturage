@@ -27,6 +27,7 @@ function Accueil() {
             <Link to="/connexion" className="btn secondary-btn">
               Connexion
             </Link>
+            
           </>
         ) : (
           <>

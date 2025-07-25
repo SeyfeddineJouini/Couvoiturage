@@ -193,6 +193,43 @@ def passengers(id):
             })
     return jsonify(passengers_list)
 
+###############################################################################
+# ENDPOINTS POUR LA SUPRRESSION D'UN UTILISATEUR
+###############################################################################
+
+@app.route('/api/users/<string:user_id>', methods=['DELETE'])
+@log_call
+def delete_user(user_id):
+    """
+    Endpoint: /api/users/<user_id>
+    Méthode: DELETE
+
+    Description:
+        Supprime définitivement un utilisateur de la base de données.
+
+    Paramètre d'URL:
+        - user_id (str): Identifiant de l'utilisateur.
+
+    Sortie (JSON):
+        Message de confirmation ou d'erreur.
+    """
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({'error': 'Utilisateur non trouvé'}), 404
+    
+    # Supprimer les trajets
+    RideRequest.query.filter_by(user_id=user_id).delete()
+
+    # Supprimer les calendriers
+    CalendarEntry.query.filter_by(user_id=user_id).delete()
+
+    # Supprimer les offres de covoiturage (si applicable)
+    DriverOffer.query.filter_by(driver_id=user_id).delete()
+
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({'message': 'Utilisateur supprimé avec succès'}), 200
+
 
 ###############################################################################
 # ENDPOINTS POUR LA GESTION DU CALENDRIER
@@ -583,7 +620,127 @@ def request_ride():
             "start_hour": start_hour,
             "end_hour": end_hour
         }), 200
+####################################################################################################################################
+    # ENDPOINTS POUR LA RECHERCHE DE MATCHS
+#####################################################################################################################################
+@app.route('/find_matches', methods=['POST'])
+@log_call
+def find_matches():
+    """
+    Endpoint: /find_matches
+    Méthode: POST
 
+    Description:
+        Recherche tous les utilisateurs(conducteurs et passagers) qui ont un trajet similaire.
+
+    Entrée (JSON):
+        - user_id (str): L'ID de l'utilisateur qui effectue la recherche.
+        - day (str): Date au format "YYYY-MM-DD".
+        - time_slot (str): "morning" ou "evening" (optionnel, défaut "morning").
+
+    Sortie (JSON): 
+        Une liste des utilisateurs correspondants avec leurs informations de trajet.
+
+    """
+
+    print("Received JSON data:", request.get_json(), flush=True)
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Missing JSON body"}), 400
+
+    person_id = data.get('user_id')
+    day_str = data.get('day')
+    time_slot = data.get('time_slot', 'morning')
+
+    if not person_id or not day_str:
+        return jsonify({"error": "Missing required parameters ('user_id', 'day')"}), 400
+
+    person = User.query.filter_by(id=person_id).first()
+    if not person:
+        return jsonify({"error": "Person not found"}), 404
+    
+    iso_year, iso_week, iso_day = convert_iso_string_to_calendar_slots(day_str)
+    entry = CalendarEntry.query.filter_by(
+        user_id=person_id,
+        year=iso_year,
+        week_number=iso_week,
+        day_of_week=iso_day
+    ).first()
+
+    if not entry:
+        print("No calendar data found for that day", flush=True)
+        return jsonify({"possible_matches": []}), 200
+    
+    person_start_hour = entry.start_hour
+    person_end_hour = entry.end_hour
+    if person_start_hour is None or person_end_hour is None:
+        print("Person's start/end hours not found in calendar", flush=True)
+        return jsonify({"possible_matches": []}), 200
+
+    if time_slot.lower() == "morning":
+        person_destination = replace_placeholders(entry.destination_aller, person.address)
+        person_departure = replace_placeholders(entry.depart_aller, person.address)
+        person_time = person_start_hour
+    else:
+        person_destination = replace_placeholders(entry.destination_retour, person.address)
+        person_departure = replace_placeholders(entry.depart_retour, person.address)
+        person_time = person_end_hour
+
+    person_coords = geocode_address(person_departure)
+    if not person_coords:
+        return jsonify({"error": "Driver's start address invalid"}), 400
+
+    dest_coords = geocode_address(person_destination)
+    if not dest_coords:
+        return jsonify({"error": "Driver's destination invalid"}), 400
+    
+
+    entries = CalendarEntry.query.filter_by(
+    year=iso_year,
+    week_number=iso_week,
+    day_of_week=iso_day
+    ).all()
+
+    potential_matches = []
+
+    for entry in entries:
+        if entry.disabled:
+            continue
+
+        user = User.query.filter_by(id=entry.user_id).first()
+
+        if time_slot == "morning":
+            departure = replace_placeholders(entry.depart_aller, user.address)
+            destination = replace_placeholders(entry.destination_aller, user.address)
+            time = entry.start_hour
+        else:
+            departure = replace_placeholders(entry.depart_retour, user.address)
+            destination = replace_placeholders(entry.destination_retour, user.address)
+            time = entry.end_hour
+
+        if not time or abs(person_time - time) > 0.5:
+            continue
+
+        if time_slot == "morning" and destination != person_destination:
+            continue
+        if time_slot == "evening" and departure != person_departure:
+            continue
+
+        # Ajout du match
+        potential_matches.append({
+            "user_id": user.id,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email,
+            "role": "conducteur" if user.is_driver else "passager",
+            "departure": departure,
+            "destination": destination,
+            "hour": time
+    })
+
+    return jsonify({"possible_passengers": potential_matches}), 200
+    
+#####################################################################################################################################
 
 @app.route('/find_passengers', methods=['POST'])
 @log_call
@@ -769,15 +926,16 @@ def offer_passenger():
         Un message de succès avec l'ID de l'offre créée.
     """
     data = request.get_json()
+    print("📨 Données reçues :", data)
     driver_id = data.get("driver_id")
     ride_request_id = data.get("ride_request_id")
     departure_hour = data.get("departure_hour")
     if not driver_id or not ride_request_id:
-        return jsonify({"error": "Missing driver_id or ride_request_id"}), 400
+       return jsonify({"error": "Missing driver_id or ride_request_id"}), 400
 
     driver = User.query.filter_by(id=driver_id).first()
     if not driver or not driver.is_driver:
-        return jsonify({"error": "Invalid driver"}), 400
+       return jsonify({"error": "Invalid driver"}), 400
 
     ride_request = RideRequest.query.filter_by(id=ride_request_id).first()
     if not ride_request:
@@ -798,7 +956,7 @@ def offer_passenger():
         send_offer_email(
             driver=driver,
             passenger=passenger,
-            deparure_hour=departure_hour,
+            departure_hour=departure_hour,
             sender_email=SENDER_EMAIL,
             sender_password=SENDER_PASSWORD
         )
