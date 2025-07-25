@@ -109,7 +109,52 @@ function Timeline() {
   if (!weekData || !weekData.days) {
     return <p>Chargement des trajets...</p>;
   }
+// #############################################################################################################################
+                              //MES MODIFICATIONS 03 JUILLET 2025
+//##############################################################################################################################
 
+const handleViewMatches = async (date, role, timeSlot) => {
+  try {
+    const response = await fetch(`http://localhost:5005/find_matches`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({user_id: userId, timeSlot: timeSlot, day: date 
+        
+      }),
+    });
+
+    if (response.ok) {
+  const data = await response.json();
+  const matches = data.possible_passengers || [];
+
+  if (matches.length === 0) {
+    alert("Aucun match trouvé.");
+  } else {
+    const matchList = matches.map((p, index) => {
+      const name = `${p.first_name} ${p.last_name}`;
+      const email = p.email || "(email non fourni)";
+      const from = p.passenger_address || "Adresse inconnue";
+      const to = p.passenger_destination || "Destination inconnue";
+      const hour = p.passenger_time || "?";
+      const role = p.passenger_id ? "Passager" : "Conducteur";
+      return `${index + 1}. ${name}  – ${email}\n  `;
+    }).join("\n\n");
+
+    alert(`Correspondances trouvées :\n\n${matchList}`);
+  }
+} else {
+      const errorData = await response.json();
+      alert(`Erreur : ${errorData.error}`);
+    }
+  } catch (error) {
+    console.error("Erreur lors de la récupération des correspondances :", error);
+    alert("Impossible de récupérer les correspondances.");
+  }
+};
+
+//##############################################################################################################################
   return (
     <div className="timeline-container">
       <h1>Vos trajets (semaines à venir incluses)</h1>
@@ -164,6 +209,15 @@ function Timeline() {
                       ? "🚗 Choisir mes passagers (Aller)"
                       : "🚶‍♂️ Demander un trajet (Aller)"}
                   </button>
+                  <button
+                    onClick={() =>
+                      handleViewMatches(day.date, day.roleAller, "morning")
+                    }
+                    className="btn-secondary"
+                  style={{ marginLeft: "10px" }}
+                  >
+                  🔍 Voir les correspondances
+                  </button>
                 </div>
 
                 <div className="timeline-section">
@@ -191,6 +245,15 @@ function Timeline() {
                     {day.roleRetour === "conducteur"
                       ? "🚗 Choisir mes passagers (Retour)"
                       : "🚶‍♂️ Demander un trajet (Retour)"}
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleViewMatches(day.date, day.roleRetour, "evening")
+                    }
+                    className="btn-secondary"
+                  style={{ marginLeft: "10px" }}
+                  >
+                  🔍 Voir les correspondances
                   </button>
                 </div>
               </li>
